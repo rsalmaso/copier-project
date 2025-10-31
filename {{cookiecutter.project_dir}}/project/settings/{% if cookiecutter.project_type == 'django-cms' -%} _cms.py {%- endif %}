@@ -1,0 +1,45 @@
+##############
+# DJANGO CMS #
+##############
+
+THUMBNAIL_PROCESSORS = (
+    "easy_thumbnails.processors.colorspace",
+    "easy_thumbnails.processors.autocrop",
+    # "easy_thumbnails.processors.scale_and_crop",
+    "filer.thumbnail_processors.scale_and_crop_with_subject_location",
+    "easy_thumbnails.processors.filters",
+)
+THUMBNAIL_MEDIA_ROOT = readenv.str("THUMBNAIL_MEDIA_ROOT", os.path.join(MEDIA_ROOT, "cache"))
+THUMBNAIL_MEDIA_URL = readenv.str("THUMBNAIL_MEDIA_URL", MEDIA_URL + "cache/")
+# THUMBNAIL_BASEDIR = "cache"
+
+CMS_TEMPLATES = [
+    ("{{ cookiecutter.project_name }}/index.html", _("Home Page (T1)")),
+]
+CMS_PLACEHOLDER_CONF = {
+}
+
+CMS_PERMISSION = False
+# CMS_MODERATOR = True
+CMS_URL_OVERWRITE = True
+CMS_MENU_TITLE_OVERWRITE = True
+CMS_SEO_FIELDS = True
+CMS_REDIRECTS = True
+CMS_LANGUAGES = {
+    1: [
+        {
+            "code": lang[0],
+            "name": lang[1],
+            "fallbacks": ["en"],
+            "public": True,
+        } for lang in LANGUAGES
+    ],
+    "default": {
+        "fallbacks": [lang[0] for lang in LANGUAGES],
+        "redirect_on_fallback": True,
+        "public": True,
+        "hide_untranslated": False,
+    }
+}
+CMS_SHOW_START_DATE = True
+CMS_SHOW_END_DATE = True

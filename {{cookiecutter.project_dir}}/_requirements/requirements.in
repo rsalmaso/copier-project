@@ -1,0 +1,37 @@
+django>=6.0b1,<6.1
+django-sekizai
+django-service-urls
+gunicorn
+lxml
+pillow
+python-readenv
+whitenoise[brotli]
+
+{% if cookiecutter.use_postgresql == "y" %}
+psycopg[binary]{% endif %}
+
+{% if cookiecutter.project_type == "django-cms" %}
+django-cms
+django-filer
+django-polymorphic
+django-select2
+djangocms-column
+djangocms-file
+djangocms-googlemap
+djangocms-link
+djangocms-picture
+djangocms-style
+djangocms-text-ckeditor
+djangocms-video{% endif %}
+
+{% if cookiecutter.use_cookielaw == "y" %}
+django-fluo-legal{% endif %}
+
+{% if cookiecutter.use_widget_tweaks == "y" or cookiecutter.project_type == "django-cms" %}
+django-widget-tweaks{% endif %}
+
+{% if cookiecutter.use_djangorestframework == "y" %}
+djangorestframework{% endif %}
+
+{% if cookiecutter.use_sorl_thumbnail == "y" %}
+sorl-thumbnail{% endif %}

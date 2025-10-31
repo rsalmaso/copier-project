@@ -1,0 +1,88 @@
+{% raw %}{% load i18n media_tags static sekizai_tags{% endraw %}{% if cookiecutter.project_type == "django-cms" %}{% raw %} cms_tags{% endraw %}{% endif %}{% if cookiecutter.use_cookielaw == "y" %}{% raw %} legal_tags{% endraw %}{% endif %}{% raw %}%}
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7 ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8 ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>{% block title %}{% endblock %}</title>
+  {% block head_meta %}
+  <meta name="description" content="{% block meta-description %}{% endblock %}">
+  <meta name="author" content="{% block meta-author %}{% endblock %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% endblock %}
+
+  {% block css %}
+  {% addtoblock "css" %}
+  {% css "css/all.css" %}
+  {% endaddtoblock %}
+  {% block extra-css %}
+  {% endblock %}
+  {% addtoblock "css" %}
+  {% endaddtoblock %}
+  {% endblock %}
+
+  {% render_block "css" %}
+
+  {% js "{% endraw %}{{ cookiecutter.project_name }}{% raw %}/libs/modernizr/modernizr-3.5.0.min.js" %}
+  {% block js %}{% endraw %}{% if cookiecutter.use_vuejs == "y" %}{% raw %}
+  {% block vuejs %}
+  {% addtoblock "js" %}
+  {% if debug %}{% js "{% endraw %}{{ cookiecutter.project_name }}{% raw %}/libs/vue/vue.js" %}{% else %}{% js "{% endraw %}{{ cookiecutter.project_name }}{% raw %}/libs/vue/vue.min.js" %}{% endif %}
+  {% endaddtoblock %}
+  {% endblock %}{% endraw %}{% endif %}{% raw %}
+  {% block jquery %}
+  {% addtoblock "js" %}
+  {% js "{% endraw %}{{ cookiecutter.project_name }}{% raw %}/libs/jquery/jquery-3.3.1.min.js" %}
+  {% endaddtoblock %}
+  {% endblock %}
+  {% block javascript %}
+  {% addtoblock "js" %}
+  {% js "{% endraw %}{{ cookiecutter.project_name }}{% raw %}/js/plugins.js" defer %}
+  {% js "{% endraw %}{{ cookiecutter.project_name }}{% raw %}/js/script.js" defer %}
+  {% endaddtoblock %}
+  {% endblock %}
+  {% comment %}
+  {% block analytics %}
+  {% addtoblock "js" %}
+  {# Google Analytics: change UA-XXXXX-X to be your site's ID. #}
+  <script>
+      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+      e.src='//www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-XXXXX-X');ga('send','pageview');
+  </script>
+  {% endaddtoblock %}
+  {% endblock %}
+  {% endcomment %}
+  {% block extra-js %}
+  {% endblock %}
+  {% endblock %}
+</head>
+
+<body>{% endraw %}{% if cookiecutter.project_type == "django-cms" %}{% raw %}{% cms_toolbar %}{% endraw %}{% endif %}{% raw %}{% block ie7 %}
+  <!--[if lt IE 8]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> to experience this site.</p><![endif]-->{% endblock %}
+    <header>
+      {% block header %}
+      {% endblock %}
+    </header>
+    <section id="main" class="main" role="main">
+      {% block main %}
+      {% endblock %}
+    </section>
+
+    <footer>
+      {% block footer %}
+      {% endblock %}
+    </footer>
+  </div> <!--! end of #container -->{% endraw %}{% if cookiecutter.use_cookielaw == "y" %}{% raw %}
+  {% cookielaw %}{% endraw %}{% endif %}{% raw %}
+
+  {% render_block "js" %}
+</body>
+</html>{% endraw %}

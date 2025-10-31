@@ -1,0 +1,25 @@
+from urllib.parse import quote
+
+import readenv
+
+port = readenv.int("PORT", 8000)
+
+readenv.setdefault("ENV", "local")
+readenv.setdefault("DEBUG", "true")
+readenv.setdefault("BASE_URL", f"http://app.fiscozen.localhost:{port}")
+readenv.setdefault(
+    "DATABASE_URL",
+    # min_size: 0 ->  No connections always open (resource saving)
+    # max_size: 5 -> MAX 5 connections per process
+    # max_lifetime: 3600 -> 1 hour lifetime (important to avoid stale connections)
+    # max_idle: 300 -> 5 minutes idle timeout - connections released if unused
+    # timeout: 30 -> Timeout to get connection from pool
+    "postgresql://fiscozen:fiscozen@db:5432/fiscozen?pool.min_size=0&pool.max_size=5&pool.max_lifetime=3600&pool.max_idle=300&pool.timeout=30",  # noqa: E501
+)
+readenv.setdefault("ALLOWED_HOSTS", "*")
+readenv.setdefault("EMAIL_BACKEND", "smtp://mailpit:1025")
+readenv.setdefault("SECRET_KEY", "<app-secret-key>")
+
+from .base import *  # noqa: E402,F401,F403{% if cookiecutter.use_djangorestframework == "y" %}
+
+REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"].append("rest_framework.renderers.BrowsableAPIRenderer")  # type: ignore[attr-defined]  # noqa: F405{% endif %}
