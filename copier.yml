@@ -98,7 +98,7 @@ upper_case_app_name:
 project_dir:
   type: str
   help: Project directory name
-  default: "_{{ project_name|lower|replace(' ', '-') }}"
+  default: "{{ project_name|lower|replace(' ', '-') }}"
   when: false
 
 use_postgresql:
