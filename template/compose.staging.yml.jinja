@@ -1,0 +1,27 @@
+---
+name: "it-paisiello55-www"
+
+networks:
+  default:
+    name: it-paisiello55-www-network
+    driver: bridge
+
+x-services-env: &services-env
+  ALLOWED_HOSTS: paisiello55.dev,paisiello55.localhost,healthy
+  CSRF_TRUSTED_ORIGINS: https://paisiello55.dev,http://paisiello55.localhost
+  DEBUG: ${DEBUG:-1}
+  DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-project.settings.staging}
+  EMAIL_BACKEND: ${EMAIL_BACKEND:-smtp://webmail:1025}
+services:
+  django:
+    command: gunicorn --bind=0.0.0.0:8000 --workers=4 --timeout=120 project.wsgi:application
+    environment:
+      !!merge <<: *services-env
+  nginx:
+    environment:
+      PORT: ${PORT:-8003}
+      WEBMAIL: "true"
+    ports:
+      - 127.0.0.1:${PORT:-8003}:80
+  webmail:
+    profiles: !reset []

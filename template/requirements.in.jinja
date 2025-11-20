@@ -10,8 +10,12 @@ pillow
 python-readenv
 rich
 whitenoise[brotli]
-{% if use_postgresql %}psycopg[binary,pool]{% endif %}
-{%- if project_type == "django-cms" %}
+{% if use_djangorestframework %}djangorestframework{% endif -%}
+{% if use_sorl_thumbnail %}sorl-thumbnail{% endif -%}
+{% if use_postgresql %}psycopg[binary,pool]{% endif -%}
+{% if use_widget_tweaks and project_type != "django-cms" %}django-widget-tweaks{% endif -%}
+{% if project_type == "django-cms" -%}
+# django-cms
 django-cms
 django-filer
 django-polymorphic
@@ -24,10 +28,5 @@ djangocms-picture
 djangocms-style
 djangocms-text-ckeditor
 djangocms-video
-{%- endif %}
-{% if use_cookielaw %}
-django-fluo-legal
-{% endif %}
-{% if use_widget_tweaks or project_type == "django-cms" %}django-widget-tweaks{% endif %}
-{% if use_djangorestframework %}djangorestframework{% endif %}
-{% if use_sorl_thumbnail %}sorl-thumbnail{% endif %}
+django-widget-tweaks
+{% endif -%}

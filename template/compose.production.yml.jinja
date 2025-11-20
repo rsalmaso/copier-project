@@ -1,0 +1,23 @@
+---
+name: "it-paisiello55-www"
+
+networks:
+  default:
+    name: it-paisiello55-www-network
+    driver: bridge
+
+x-services-env: &services-env
+  ALLOWED_HOSTS: paisiello55.it,healthy
+  CSRF_TRUSTED_ORIGINS: https://paisiello55.it
+  DEBUG: ${DEBUG:-0}
+  DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-project.settings.production}
+services:
+  django:
+    command: gunicorn --bind=0.0.0.0:8000 --workers=4 --timeout=120 project.wsgi:application
+    environment:
+      !!merge <<: *services-env
+  nginx:
+    environment:
+      PORT: ${PORT:-8003}
+    ports:
+      - 127.0.0.1:${PORT:-8003}:80

@@ -1,0 +1,24 @@
+---
+x-services-base: &services-base
+  volumes:
+    - ~/.ssh:/home/ubuntu/.ssh
+    - ${SSH_AUTH_SOCK}:${SSH_AUTH_SOCK} # Forward local machine SSH key to docker
+x-services-env: &services-env
+  DEBUG: ${DEBUG:-1}
+  DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-project.settings.local}
+  EMAIL_BACKEND: ${EMAIL_BACKEND:-smtp://webmail:1025}
+  SSH_AUTH_SOCK: ${SSH_AUTH_SOCK:-/ssh-agent}
+services:
+  django:
+    !!merge <<: *services-base
+    command: python manage.py runserver 0:8000
+    environment:
+      !!merge <<: *services-env
+  nginx:
+    environment:
+      PORT: ${PORT:-8000}
+      WEBMAIL: "true"
+    ports:
+      - ${PORT:-8000}:80
+  webmail:
+    profiles: !reset []
